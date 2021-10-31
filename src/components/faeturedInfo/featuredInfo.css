@@ -1,0 +1,33 @@
+.featured {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.featuredItem {
+    flex: 1;
+    margin: 0px 20px;
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    box-shadow: 3px 4px 11px 6px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 3px 4px 11px 6px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 3px 4px 11px 6px rgba(0, 0, 0, 0.25);
+}
+
+.featuredMoneyContainer {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.featuredMoneyRate {
+    
+    align-items: center;
+}
+
+.featuredMoney {
+    font-size: 30px;
+}
