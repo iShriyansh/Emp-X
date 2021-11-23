@@ -1,12 +1,12 @@
 import React from 'react'
 import {Box} from "@mui/material"
-export default function Logo() {
+export default function Logo(props) {
     return (
-        <Box sx = {{height:"150px", width:"100px" }}>
+        <Box sx = {{height:props.height, width: props.width }}>
              <svg
             id="logo-4"
-            width="150"
-            height="100"
+            width={props.width}
+            height={props.height}
             viewBox="0 0 100 51"
             fill="none"
             xmlns="http://www.w3.org/2000/svg">
@@ -66,4 +66,11 @@ export default function Logo() {
         </Box>
        
     )
+}
+
+//default props for the component
+
+Logo.defaultProps = {
+ height:"100px",
+  width:"100px"
 }

@@ -94,23 +94,12 @@ function searchRow(text)
         setSearchedRow([]);
     }
     
-// rows.forEach(function (row, index){
-// var x = row.firstName;
-
-// if(x!==null){
-// if(x.includes(text)){
-// setSearchedRow((row))
-// }
-// }else{
-// }
-// });
-
 
 
 }
 
   return (
-    <div style ={{display:"flex", flexDirection: "column"}}> 
+    <div style ={{display:"flex", flexDirection: "column", backgroundColor:"White", padding : "24px", borderRadius:"8px"}}> 
        
        
          <Box  sx ={{display:"flex", flexDirection: {xs : "column" ,md:"row"}, justifyContent:"space-between", mb:2, alignItems:"start",  gap:2}}>

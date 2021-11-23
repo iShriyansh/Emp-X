@@ -6,3 +6,7 @@
 .home {
     flex: 4;
 }
+
+body {
+    background-color: #ECEDF1;
+}

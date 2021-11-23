@@ -14,9 +14,10 @@ import {
 
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import BasicAppbar from '../../components/topbar/basic_app_bar';
-import Logo from '../../components/core/logo';
+import Logo from '../../core/logo';
 import {useFormik} from 'formik';
-import * as yup from 'yup';
+
+import validationSchema from  "../../core/validation"
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -31,27 +32,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 const phoneRegExp = /^((\\+[1-9]{1,9}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-const validationSchema = yup.object({
-  firstName: yup.string("Df").required("First name is required"),
-  lastName : yup.string("FD").required("Last name is required"),
-  email: yup.string('Enter your email')
-    .email('Enter a valid email')
-    .required('Email is required'),
-  password: yup
-    .string('Enter your password')
-    .min(8, 'Password should be of minimum 8 characters length')
-    .required('Password is required'),
- confirmPassword: yup.string("Confirm password")
-     .oneOf([yup.ref('password'), null], 'Passwords must match').required("Confirm password"),
-   phone: yup
-    .string('Enter your phone number')
-    .required()
-.matches(/^[0-9]+$/, "Must be only digits")
-.min(10, 'Invalid Number')
-.max(10, 'Invlaid Number') 
 
-
-});
 export default function SignUp() {
 
 
