@@ -13,9 +13,12 @@ import {
 } from '@mui/material';
 
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import BasicAppbar from '../../components/topbar/basic_app_bar';
+
 import Logo from '../../core/logo';
 import {useFormik} from 'formik';
+import signup from '../../repository/auth/signup';
+
+
 
 import validationSchema from  "../../core/validation"
 function Copyright(props) {
@@ -48,14 +51,15 @@ export default function SignUp() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      signup(values);
+      
     },
   });
 
   return (
     <ThemeProvider theme={theme}>
 
-      <BasicAppbar/>
+      {/* <BasicAppbar/> */}
 
       <Container maxWidth="xs" m="2">
 
@@ -72,7 +76,7 @@ export default function SignUp() {
             m: 4
           }}/>
           <Logo />
-       
+      
           <Grid container direction="row" alignItems="start">
             <Typography
               component="h5"
@@ -86,13 +90,12 @@ export default function SignUp() {
               Create an account!
             </Typography>
           </Grid>
-          <Box
-            component="form"
-            noValidate
-           
-            sx={{
-            mt: 3
-          }}>
+        
+          <form
+            
+     
+            onSubmit={formik.handleSubmit}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -222,11 +225,14 @@ export default function SignUp() {
               fullWidth
               size='large'
               variant="outlined"
-              onClick={formik.handleSubmit}
+             
               disabled = {!formik.values.check}
+               type='submit'
               sx={{
               mt: 3,
-              mb: 2
+              mb: 2,
+                
+
             }}>
               Sign Up
             </Button>
@@ -237,7 +243,7 @@ export default function SignUp() {
                 </Link>
               </Grid>
             </Grid>
-          </Box>
+          </form>
        
        
         </Box>

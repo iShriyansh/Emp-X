@@ -1,94 +1,109 @@
 import {React} from 'react';
 
 import {
-  Button,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Link,
+ 
+  
+
   Grid,
   Box,
   Typography,
-  Container,
+
   Avatar,
   IconButton
 } from '@mui/material';
-import { Cancel, AddPhotoAlternate } from '@mui/icons-material';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
+import { Cancel, CancelTwoTone,AddPhotoAlternate } from '@mui/icons-material';
 
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
+
+
+
 
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 
 
-import {useFormik} from 'formik';
-
+import {Formik, Form} from 'formik';
+import * as Yup from 'yup';
 import validationSchema from  "../../../core/validation"
 
+import TextField from '../../../components/FormsUI/TextField';
+import Button from '../../../components/FormsUI/Button';
+import Select from '../../../components/FormsUI/Select';
+import RadioGroup from '../../../components/FormsUI/RadioGroup';
+import { useState,useRef } from 'react';
 export default function AddNewEmployee(){
     return <AddUserForm/>;
 }
+
+
 
  function AddUserForm() {
 
 const theme = createTheme();
 const phoneRegExp = /^((\\+[1-9]{1,9}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-    const formik = useFormik({
-    initialValues: {
-      firstName : '',
-      lastName : '',
-      phone : '',
-      email: '',
-      password: '',
-      confirmPassword:'',
-      check:false
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
+
+
+
+
+
+
+
+
+
+const INITIAL_FORM_STATE = {
+  firstName: "",
+  middleName:"",
+  lastName:"",
+  companyEmail:"",
+  dob:"",
+  personalEmail:"",
+  phone:"",
+  phoneAlt:"",
+  role:"",
+  gender : "",
+
+
+}
+
+const FORM_VALIDATION = Yup.object().shape({
+  firstName: Yup.string().required("required"),
+  middleName  : Yup.string().required("required"),
+  lastName: Yup.string().required("required"),
+  companyEmail: Yup.string().email().required("required"),
+  personalEmail: Yup.string().email().required("required"),
+  dob: Yup.date().required("required"),
+  phone: Yup.string().matches(phoneRegExp, "Phone number is not valid").required("required"),
+   phoneAlt: Yup.string().matches(phoneRegExp, "Phone number is not valid").required("required"),
+   role: Yup.string().required("required"),
+   gender: Yup.string().required("required")
   });
 
-  const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
+  const [selectedPic, setSelectedPic] = useState();
+ const inputEl = useRef(null);
 
 
-function CustomTextFieldWithLabel(props){
-  return    <Box>
-            <Typography variant = "subtitle1" >{props.props.label}</Typography>
-          <Box sx = {{height : "4px"}}></Box>
-            <TextField fullWidth size = "small"  placeholder={props.props.placeholder}></TextField>
-          </Box>
-}
+ const handleFileUpload = (e) => {
+     if (e.target.files && e.target.files.length > 0) {
+      setSelectedPic(URL.createObjectURL(e.target.files[0]) );
+    }
+  };
 
-
-  function GenderPicker() {
-  return (
-    <FormControl component="fieldset">
-      <FormLabel component="legend">Gender</FormLabel>
-      <RadioGroup row aria-label="gender" name="row-radio-buttons-group">
-        <FormControlLabel value="female" control={<Radio />} label="Female" />
-        <FormControlLabel value="male" control={<Radio />} label="Male" />
-        <FormControlLabel value="other" control={<Radio />} label="Other" />
-     
-      </RadioGroup>
-    </FormControl>
-  );
-}
 
   return (
    <>
-        <Box sx={{ flexGrow: 1, width:"70%" , backgroundColor:"white", padding:"20px", borderRadius: "8px"}}>
+        <Box sx={{ flexGrow: 1, width:"80%" , backgroundColor:"white", padding:"20px", borderRadius: "8px"}}>
+        <Formik
+          initialValues={{
+                ...INITIAL_FORM_STATE
+              }}
+              validationSchema={FORM_VALIDATION}
+              onSubmit={values => {
+                console.log(values);
+              }}
+        
+        >
+      <Form>
       <Grid container spacing={2}>
+  
        <Grid item xs={12}>
          <Typography variant = "h6">Employee Details</Typography>
         </Grid>
@@ -96,64 +111,94 @@ function CustomTextFieldWithLabel(props){
         <Typography variant = "subtitle1" >Profile picture</Typography>
       <div style = {{position:"relative" ,width:"100px", marginBottom : "25px", marginTop:"25px"}}>
        
+ <input
+          ref={inputEl}
+          accept="image/png, image/jpeg" 
+          type="file"
+          onChange={handleFileUpload}
+          style={{ display: "none"  }}
+          // multiple={false}
+        />
+      
         <Avatar
+       
   alt="Remy Sharp"
-  src="https://www.pixinvent.com/materialize-material-design-admin-template/laravel/demo-4/images/avatar/avatar-7.png"
-  sx={{ width: 120, height: 120 }}
+  onClick= { ()=>{inputEl.current.click()}}
+  src={selectedPic}
+  sx={{ width: 120, height: 120,  border: '0.1px solid lightgray' }}
 >
-<AddPhotoAlternate sx = {{height:60, width:60}}/>
+<AddPhotoAlternate 
+
+sx = {{height:60, width:60}}/>
 
 </Avatar>
 
-,
 
 
+{selectedPic&&  <span style = {{position : "absolute" ,top: "0px",
+right: "-28px" }}> <IconButton onClick = {()=> setSelectedPic(null)}  ><Cancel sx = {{fontSize:"25px", color:"Red", backgroundColor:"white" , borderRadius: "50%"}}/></IconButton></span> }
 
- <span style = {{position : "absolute" ,top: "-15px",
-right: "-20px" }}> <IconButton  ><Cancel sx = {{fontSize:"35px", color:"Red"}}/></IconButton></span> 
+ 
 
 </div>
 
 </Grid>
         <Grid item xs={4}>
-       <CustomTextFieldWithLabel props = {{label: "First Name"}}/>
+         <TextField name = "firstName" label = "First Name"/>
         </Grid>
         <Grid item xs={4}>
-         <CustomTextFieldWithLabel props = {{label: "Middle Name"}}/>
+         <TextField name = "middleName" label = "Middle Name"/>
         </Grid>
 
            <Grid item xs={4}>
-         <CustomTextFieldWithLabel props = {{label: "Last Name"}}/>
+         <TextField name = "lastName" label = "Last Name"/>
         </Grid>
      
            <Grid  item xs={12}>
-        <GenderPicker/>
+        <RadioGroup row name = "gender"  label = "Select Gender" options = {["Male", "Female", "Other"]}/>
          </Grid>
         <Grid item xs={6}>
-          <CustomTextFieldWithLabel props = {{label: "Date of birth",  placeholder: "DD/MM/YYYY"}}/>
+          <TextField name = "dob" label = "Date of Birth"/>
         </Grid>
 
-           <Grid item xs={6}>
-          <CustomTextFieldWithLabel props = {{label: "Phone Number",  placeholder: "Country code + number"}}/>
+
+  <Grid item xs={6}>
+          <TextField name = "phone" label = "Phone number"/>
         </Grid>
               <Grid item xs={6}>
-            <CustomTextFieldWithLabel props = {{label: "Alterntive Phone(Optional)",  placeholder: ""}}/>
+            <TextField name = "phoneAlt" label = "Phone number(Alternative)"/>
         </Grid>
 
        <Grid item xs={6}>
-          <CustomTextFieldWithLabel props = {{label: "Company Email",  placeholder: "example@email.com"}}/>
+          <TextField name = "companyEmail" label= "Company Email"  placeholder= "example@email.com"    />
         </Grid>
 
                <Grid item xs={6}>
-          <CustomTextFieldWithLabel props = {{label: "Personal Email",  placeholder: "example@email.com"}}/>
+         <TextField name = "personalEmail" label= "Personal Email"  placeholder= "example@email.com" />
         </Grid>
 
-         
+                  <Grid item xs={6}>
+        <Select
+                      name="role"
+                      label="Employee Role"
+                      placeholder = "Select role"
+                      options={["Manager", "Employee",  "Admin", "Super Admin"]}
+                    />
+        </Grid>
+
+
 
          
 
-    
+<Grid container justifyContent="flex-end" sx ={{ml :2, mt:3}}>
+     <Button>Add user</Button>
+</Grid>
+              
+
       </Grid>
+      </Form>
+      </Formik>
+      <Box sx ={{pb:3}}></Box>
     </Box>
  </>
 
