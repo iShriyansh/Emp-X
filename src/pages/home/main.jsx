@@ -25,6 +25,9 @@ import ManageEmployee from './manage_employee/ManageEmployee';
 import { Search, ExpandLess,ExpandMore,StarBorder, AddCircleOutline } from '@mui/icons-material';
 import AddNewEmployee from './manage_employee/AddNewEmployee';
 import "./main.css";
+import { getUser, removeUser } from '../../core/user';
+import { useHistory } from "react-router-dom";
+import {useEffect} from 'react';
 const drawerWidth = 240;
 
 
@@ -41,6 +44,18 @@ function ResponsiveDrawer(props) {
   const handleClick = () => {
     setOpen(!open);
   };
+
+ 
+  let user =  getUser();
+
+const history = useHistory();
+  function onLogoutpressed(){
+    removeUser();
+    history.push('/registration');
+
+  }
+
+
     const listItem = [
         {
             text: 'Dashboard',
@@ -169,8 +184,13 @@ function ResponsiveDrawer(props) {
                 <IconButton onClick={()=>{}}>
         <Search />
       </IconButton> */}
-
+   
+      <Button variant="text" color="warning" onClick={()=>{
+          onLogoutpressed();
+      }}>Logout </Button>
+     <Typography>{user.user.firstName}</Typography>
      
+
    <Avatar
         alt="Remy Sharp"
         src="https://content.thriveglobal.com/wp-content/uploads/2018/12/profile21.jpg"

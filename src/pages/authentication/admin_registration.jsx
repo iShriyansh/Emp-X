@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-
+import { useHistory } from "react-router-dom";
 import Logo from '../../core/logo';
 import {useFormik} from 'formik';
 import signup from '../../repository/auth/signup';
@@ -21,6 +21,7 @@ import signup from '../../repository/auth/signup';
 
 
 import validationSchema from  "../../core/validation"
+import { setUser } from '../../core/user';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -38,7 +39,7 @@ const phoneRegExp = /^((\\+[1-9]{1,9}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2
 
 export default function SignUp() {
 
-
+  const history = useHistory();
     const formik = useFormik({
     initialValues: {
       firstName : '',
@@ -51,7 +52,20 @@ export default function SignUp() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      signup(values);
+      console.log(values);
+    
+      signup(values,
+         (response) => {
+          alert(response);
+          setUser(response);
+          history.push('/');
+          //setting data in local storage
+       
+       
+         } ,
+          (error) => {
+              alert(error);
+          });
       
     },
   });
